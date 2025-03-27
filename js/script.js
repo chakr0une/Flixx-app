@@ -6,11 +6,13 @@ async function fetchAPIData(endpoint) {
   const API_KEY = '832a7955e92ca33ef7c38e8bb6147bc8';
   const API_URL = 'https://api.themoviedb.org/3/';
 
+  showSpinner();
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
   );
   const data = await response.json();
 
+  hideSpinner();
   return data;
 }
 
@@ -46,6 +48,14 @@ async function displayPopularMovies() {
 
     document.querySelector('#popular-movies').appendChild(div);
   });
+}
+
+// Spinner
+function showSpinner() {
+  document.querySelector('.spinner').classList.add('show');
+}
+function hideSpinner() {
+  document.querySelector('.spinner').classList.remove('show');
 }
 
 // Init App
