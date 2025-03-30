@@ -44,6 +44,7 @@ async function searchAPIData() {
   return data;
 }
 
+// Display 20 most popular movies
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
 
@@ -78,6 +79,7 @@ async function displayPopularMovies() {
   });
 }
 
+// Display Movie Details
 async function displayMovieDetails() {
   const movieId = window.location.search.split('=')[1];
   const movie = await fetchAPIData(`movie/${movieId}`);
@@ -149,6 +151,7 @@ async function displayMovieDetails() {
   document.querySelector('#movie-details').appendChild(div);
 }
 
+// Display 20 most popular tv shows
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
 
@@ -183,6 +186,7 @@ async function displayPopularShows() {
   });
 }
 
+// Display Show Details
 async function displayShowDetails() {
   const showId = window.location.search.split('=')[1];
   const show = await fetchAPIData(`tv/${showId}`);
@@ -324,6 +328,7 @@ function initSwiper() {
   });
 }
 
+// Search Movies/Shows
 async function search() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -334,7 +339,11 @@ async function search() {
 
   if (global.search.term !== '' && global.search.term !== null) {
     const { results, total_pages, page, total_results } = await searchAPIData();
+
+    global.search.page = page;
+    global.search.totalPages = total_pages;
     global.search.totalResults = total_results;
+
     if (results.length === 0) {
       showAlert('No results found');
       return;
@@ -349,6 +358,11 @@ async function search() {
 }
 
 function displaySearchResults(results) {
+  // Clear previous results
+  document.querySelector('#search-results').innerHTML = '';
+  document.querySelector('#search-results-heading').innerHTML = '';
+  document.querySelector('#pagination').innerHTML = '';
+
   results.forEach((result) => {
     const div = document.createElement('div');
     div.classList.add('card');
@@ -390,6 +404,7 @@ function displaySearchResults(results) {
     `;
     document.querySelector('#search-results').appendChild(div);
   });
+
   displayPagination();
 }
 
